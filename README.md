@@ -1,3 +1,5 @@
+> This repository is for demonstration purposes of how it can be implemented in Angular and is not maintaned. Please fork and maintain your own version of this repository.
+
 # ngx-tooltip
 
 Simple tooltip control for your [Angular](https://angular.io/) applications using [Bootstrap 3](http://getbootstrap.com/). Does not depend of [jQuery](https://jquery.com/).

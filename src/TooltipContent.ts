@@ -9,7 +9,7 @@ import {Component, Input, AfterViewInit, ElementRef, ChangeDetectorRef} from "@a
      [class.in]="isIn"
      [class.fade]="isFade"
      role="tooltip">
-    <div class="tooltip-arrow" [style.border-bottom-color]="backgroundColor">
+    <div class="tooltip-arrow" [style.border-right-color]="backgroundColor">
     </div> 
     <div class="tooltip-inner" [style.background-color]="backgroundColor">
         <ng-content></ng-content>

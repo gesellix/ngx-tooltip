@@ -1,6 +1,6 @@
 {
   "name": "ngx-tooltip-gesellix",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "Simple tooltip control for your angular applications using bootstrap3.",
   "license": "MIT",
   "readmeFilename": "README.md",

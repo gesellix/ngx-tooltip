@@ -27,7 +27,8 @@
   "scripts": {
     "clean": "node_modules/.bin/gulp clean",
     "package": "node_modules/.bin/gulp package",
-    "pack-local": "node_modules/.bin/gulp package && cd build && npm pack package"
+    "pack-local": "node_modules/.bin/gulp package && cd build && npm pack package",
+    "publish": "node_modules/.bin/gulp publish"
   },
   "peerDependencies": {
     "@angular/core": "^4.0.1"

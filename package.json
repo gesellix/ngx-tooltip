@@ -1,6 +1,6 @@
 {
   "name": "ngx-tooltip-gesellix",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "Simple tooltip control for your angular applications using bootstrap3.",
   "license": "MIT",
   "readmeFilename": "README.md",
@@ -27,8 +27,7 @@
   "scripts": {
     "clean": "node_modules/.bin/gulp clean",
     "package": "node_modules/.bin/gulp package",
-    "pack-local": "node_modules/.bin/gulp package && cd build && npm pack package",
-    "publish": "node_modules/.bin/gulp publish"
+    "pack-local": "node_modules/.bin/gulp package && cd build && npm pack package"
   },
   "peerDependencies": {
     "@angular/core": "^4.0.1"

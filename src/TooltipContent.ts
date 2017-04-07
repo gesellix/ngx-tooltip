@@ -1,22 +1,22 @@
-import {Component, Input, AfterViewInit, ElementRef, ChangeDetectorRef} from "@angular/core";
+import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, Input} from "@angular/core";
 
 @Component({
     selector: "tooltip-content",
     template: `
-<div class="tooltip {{ placement }}"
-     [style.top]="top + 'px'"
-     [style.left]="left + 'px'"
-     [class.in]="isIn"
-     [class.fade]="isFade"
-     role="tooltip">
-    <div class="tooltip-arrow" [style.border-right-color]="backgroundColor">
-    </div> 
-    <div class="tooltip-inner" [style.background-color]="backgroundColor">
-        <ng-content></ng-content>
-        {{ content }}
-    </div> 
-</div>
-`
+        <div class="tooltip {{ placement }}"
+            [style.top]="top + 'px'"
+            [style.left]="left + 'px'"
+            [class.in]="isIn"
+            [class.fade]="isFade"
+            role="tooltip">
+            <div class="tooltip-arrow" [style.border-right-color]="backgroundColor">
+            </div>
+            <div class="tooltip-inner" [style.background-color]="backgroundColor">
+                <ng-content></ng-content>
+                {{ content }}
+            </div>
+        </div>
+    `
 })
 export class TooltipContent implements AfterViewInit {
 
@@ -31,7 +31,7 @@ export class TooltipContent implements AfterViewInit {
     content: string;
 
     @Input()
-    placement: "top"|"bottom"|"left"|"right" = "bottom";
+    placement: "top" | "bottom" | "left" | "right" = "bottom";
 
     @Input()
     animation: boolean = true;
@@ -52,7 +52,7 @@ export class TooltipContent implements AfterViewInit {
     // Constructor
     // -------------------------------------------------------------------------
 
-    constructor(private element: ElementRef,
+    constructor(public element: ElementRef,
                 private cdr: ChangeDetectorRef) {
     }
 
@@ -70,23 +70,26 @@ export class TooltipContent implements AfterViewInit {
     // -------------------------------------------------------------------------
 
     show(): void {
-        if (!this.hostElement)
+        if (!this.hostElement) {
             return;
+        }
 
         const p = this.positionElements(this.hostElement, this.element.nativeElement.children[0], this.placement);
         this.top = p.top;
         this.left = p.left;
         this.isIn = true;
-        if (this.animation)
+        if (this.animation) {
             this.isFade = true;
+        }
     }
 
     hide(): void {
         this.top = -100000;
         this.left = -100000;
         this.isIn = true;
-        if (this.animation)
+        if (this.animation) {
             this.isFade = false;
+        }
     }
 
     // -------------------------------------------------------------------------
@@ -159,7 +162,7 @@ export class TooltipContent implements AfterViewInit {
     }
 
     private position(nativeEl: HTMLElement): { width: number, height: number, top: number, left: number } {
-        let offsetParentBCR = { top: 0, left: 0 };
+        let offsetParentBCR = {top: 0, left: 0};
         const elBCR = this.offset(nativeEl);
         const offsetParentEl = this.parentOffsetEl(nativeEl);
         if (offsetParentEl !== window.document) {
@@ -188,11 +191,14 @@ export class TooltipContent implements AfterViewInit {
     }
 
     private getStyle(nativeEl: HTMLElement, cssProp: string): string {
-        if ((nativeEl as any).currentStyle) // IE
+        // IE
+        if ((nativeEl as any).currentStyle) {
             return (nativeEl as any).currentStyle[cssProp];
+        }
 
-        if (window.getComputedStyle)
+        if (window.getComputedStyle) {
             return (window.getComputedStyle(nativeEl) as any)[cssProp];
+        }
 
         // finally try and get inline style
         return (nativeEl.style as any)[cssProp];

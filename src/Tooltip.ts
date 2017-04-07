@@ -1,7 +1,4 @@
-import {
-    Directive, HostListener, ComponentRef, ViewContainerRef, Input, ComponentFactoryResolver,
-    ComponentFactory
-} from "@angular/core";
+import {ComponentFactoryResolver, ComponentRef, Directive, HostListener, Input, ViewContainerRef} from "@angular/core";
 import {TooltipContent} from "./TooltipContent";
 
 @Directive({
@@ -29,7 +26,7 @@ export class Tooltip {
     // -------------------------------------------------------------------------
 
     @Input("tooltip")
-    content: string|TooltipContent;
+    content: string | TooltipContent;
 
     @Input()
     tooltipDisabled: boolean;
@@ -38,7 +35,10 @@ export class Tooltip {
     tooltipAnimation: boolean = true;
 
     @Input()
-    tooltipPlacement: "top"|"bottom"|"left"|"right" = "bottom";
+    tooltipPlacement: "top" | "bottom" | "left" | "right" = "bottom";
+
+    // @Output()
+    // public clickOutside = new EventEmitter<MouseEvent>();
 
     // -------------------------------------------------------------------------
     // Public Methods
@@ -47,21 +47,24 @@ export class Tooltip {
     @HostListener("focusin")
     @HostListener("mouseenter")
     show(): void {
-        if (this.tooltipDisabled || this.visible)
+        if (this.tooltipDisabled || this.visible) {
             return;
+        }
 
         this.visible = true;
         if (typeof this.content === "string") {
             const factory = this.resolver.resolveComponentFactory(TooltipContent);
-            if (!this.visible)
+            if (!this.visible) {
                 return;
+            }
 
             this.tooltip = this.viewContainerRef.createComponent(factory);
             this.tooltip.instance.hostElement = this.viewContainerRef.element.nativeElement;
             this.tooltip.instance.content = this.content as string;
             this.tooltip.instance.placement = this.tooltipPlacement;
             this.tooltip.instance.animation = this.tooltipAnimation;
-        } else {
+        }
+        else {
             const tooltip = this.content as TooltipContent;
             tooltip.hostElement = this.viewContainerRef.element.nativeElement;
             tooltip.placement = this.tooltipPlacement;
@@ -71,17 +74,40 @@ export class Tooltip {
     }
 
     @HostListener("focusout")
-    @HostListener("mouseleave")
+    // @HostListener("mouseleave")
     hide(): void {
-        if (!this.visible)
+        if (!this.visible) {
             return;
+        }
 
         this.visible = false;
-        if (this.tooltip)
+        if (this.tooltip) {
             this.tooltip.destroy();
+        }
 
-        if (this.content instanceof TooltipContent)
+        if (this.content instanceof TooltipContent) {
             (this.content as TooltipContent).hide();
+        }
     }
 
+    @HostListener("document:click", ["$event", "$event.target"])
+    click(event: MouseEvent, targetElement: HTMLElement): void {
+        if (!targetElement) {
+            return;
+        }
+
+        // TODO also handle for `this.tooltip`
+        if (this.content instanceof TooltipContent) {
+            const tooltipContent = this.content as TooltipContent;
+            if (!tooltipContent.element.nativeElement.contains(event.target)) {
+                this.hide();
+            }
+        }
+
+        // from https://github.com/chliebel/angular2-click-outside
+        // const clickedInside = this._elementRef.nativeElement.contains(targetElement);
+        // if (!clickedInside) {
+        //     this.clickOutside.emit(event);
+        // }
+    }
 }
